@@ -1,6 +1,4 @@
-const int PIN_LOW = 12; // Заміна pin_low на gpio12
-const int PIN_HIGH = 3;// Заміна pin_high на gpio03
-const int nasos_otop = 0; // Заміна nasos_otop на gpio0
+
 
 class ControlSystem {
   private:

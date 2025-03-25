@@ -1,5 +1,6 @@
 #include <ArduinoOTA.h>
 #include <EEPROM.h>
+#include "config.h"
 #define PID
 #include "st_enum.h"
 #include "link.h"
@@ -27,6 +28,9 @@ void setup() {
 void loop() {
   ArduinoOTA.handle(); // Всегда готовы к прошивке
   rssi =  map(WiFi.RSSI(), -115, -35, 0, 100);
+  loop_out();
+  loop_pid();
+  loopMQtt(); 
   // put your main code here, to run repeatedly:
   if (millis() - timer1>1000)
   {

@@ -2,8 +2,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-// Data wire is plugged into GPIO 9 on the ESP
-#define ONE_WIRE_BUS 9
+
 
 // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
 OneWire oneWire(ONE_WIRE_BUS);

@@ -1,5 +1,4 @@
-#define WIFI_SSID "aonline3g"  // Имя точки доступа WIFI
-#define WIFI_PASS "1qaz2wsx3edc" // Пароль точки доступа WIFI
+
 
 void ConnectWIFI() {
   // Запускаем WiFi
