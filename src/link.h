@@ -27,6 +27,7 @@ void ConnectWIFI() {
   } else {
     Serial.println("Already connected to WiFi");
     Serial.println(WiFi.localIP());
+    
   }
 }
 

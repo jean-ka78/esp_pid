@@ -2,11 +2,7 @@
 
 long rssi;
 
-//MQTT Server
-const char *mqtt_server = "100.122.42.24"; // Имя сервера MQTT
-const int mqtt_port = 1883; // Порт для подключения к серверу MQTT
-const char *mqtt_user = "mqtt"; // Логин от сервер
-const char *mqtt_pass = "qwerty"; // Пароль от сервера
+
 unsigned long lastMsg = 0;
 #define MSG_BUFFER_SIZE (50)
 char msg[MSG_BUFFER_SIZE];
@@ -87,10 +83,10 @@ void callback(char* topic, byte* payload, unsigned int length) {
       eeprom.boy_state = false;
       Serial.println("Heat: " + String(eeprom.boy_state));
     }
-  } else if (strcmp(topic, TEMP_SETPOINT_SET_BOY) == 0) {
-    float temp_boy = message.toFloat();
-    eeprom.temp_u = temp_boy;
-    Serial.println("Ustavka Boyler: " + String(eeprom.temp_u));
+  } else if (strcmp(topic, TEMP_SETPOINT_SET_HEAT) == 0) {
+    float temp_heat = message.toFloat();
+    eeprom.temp_u_b = temp_heat;
+    Serial.println("Ustavka Boyler: " + String(eeprom.temp_u_b));
   } else if (strcmp(topic, MODE_SET_TOPIC_HEAT) == 0) {
     if (message == "heat") {
       eeprom.heat_state = true;
@@ -199,7 +195,7 @@ void getValues() {
 }
 
 void SendData() {
-  dtostrf(T_SET, 2, 2, msg);
+  dtostrf(eeprom.temp_u_b, 2, 2, msg);
   client.publish(CURRENT_TEMP_SET_PID, msg);
 
   if (eeprom.nasos_on) {

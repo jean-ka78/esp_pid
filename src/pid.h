@@ -187,7 +187,7 @@ if (T_OUT <= T_X1) {
 } else {
     T_SET = T_Y2;
 }
-_tempVariable_float = T_SET;
+_tempVariable_float = eeprom.temp_u_b;
 
 // Параметри для ПІД-регулювання
 ON_OFF = eeprom.heat_otop;
