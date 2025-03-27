@@ -20,13 +20,16 @@ void ConnectWIFI() {
     if (WiFi.status() == WL_CONNECTED) {
       Serial.println("WiFi connected");
       Serial.println(WiFi.localIP());
+      
     } else {
       Serial.println("WiFi not connected");
       WiFi.disconnect(); // Отключаемся от сети
+      
     }
   } else {
     Serial.println("Already connected to WiFi");
     Serial.println(WiFi.localIP());
+    
     
   }
 }

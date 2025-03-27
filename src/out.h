@@ -1,5 +1,3 @@
-
-
 class ControlSystem {
   private:
     const int pinLow;
@@ -11,15 +9,26 @@ class ControlSystem {
   public:
     // Конструктор класу
     ControlSystem(int pinLow, int pinHigh, int nasosOtop) 
-      : pinLow(pinLow), pinHigh(pinHigh), nasosOtop(nasosOtop), nasosOn(false) {
-        // Ініціалізація пінів під час створення об'єкта
+      : pinLow(pinLow), pinHigh(pinHigh), nasosOtop(nasosOtop), nasosOn(false) {}
+
+    // Метод для ініціалізації пінів
+    void initPins() {
         pinMode(pinLow, OUTPUT);
         pinMode(pinHigh, OUTPUT);
         pinMode(nasosOtop, OUTPUT);
+        pinMode(Led_wifi, OUTPUT);
+        pinMode(Led_power, OUTPUT);
+
+        // Вимкнення всіх виходів на старті
+        digitalWrite(pinLow, LOW);
+        digitalWrite(pinHigh, LOW);
+        digitalWrite(nasosOtop, LOW);
+        digitalWrite(Led_wifi, LOW);
+        digitalWrite(Led_power, HIGH);
     }
 
     // Метод для встановлення сигналу на насос опалення
-    void nasosOtop_start(bool _nasosOtopOn){
+    void nasosOtop_start(bool _nasosOtopOn) {
         nasosOtopOn = _nasosOtopOn;
     }
 
@@ -30,6 +39,14 @@ class ControlSystem {
         } else {
             turnNasosOff(); // Вимкнути насос опалення
         }
+    }
+
+    void led0n() {
+        digitalWrite(Led_wifi, HIGH);
+    }
+
+    void led0ff() {
+        digitalWrite(Led_wifi, LOW);
     }
 
     // Увімкнути насос опалення (Otop)
@@ -48,24 +65,24 @@ class ControlSystem {
 
     // Підняти клапан
     void valveUp() {
-        digitalWrite(pinHigh, LOW);
-        digitalWrite(pinLow, HIGH);
+        digitalWrite(pinHigh, HIGH);
+        digitalWrite(pinLow, LOW);
     }
 
     // Зупинити підйом клапана
     void valveUpStop() {
-        digitalWrite(pinHigh, HIGH);
+        digitalWrite(pinHigh, LOW);
     }
 
     // Опустити клапан
     void valveDown() {
-        digitalWrite(pinLow, LOW);
-        digitalWrite(pinHigh, HIGH);
+        digitalWrite(pinLow, HIGH);
+        digitalWrite(pinHigh, LOW);
     }
 
     // Зупинити опускання клапана
     void valveDownStop() {
-        digitalWrite(pinLow, HIGH);
+        digitalWrite(pinLow, LOW);
     }
 
     // Перевірити стан насосу опалення (Otop)
@@ -78,7 +95,9 @@ class ControlSystem {
 ControlSystem control(PIN_LOW, PIN_HIGH, nasos_otop);  // пін-коди передаються через конструктор
 
 void setup_out() {
-    // Налаштування пінів виконується в конструкторі, тому setup() пустий
+    // Налаштування пінів
+    control.initPins();
+    
 }
 
 void loop_out() {

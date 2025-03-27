@@ -1,5 +1,8 @@
 #include "GyverTimer.h"
 GTimer isTimer(MS);  
+GTimer debugTimer(MS);  // Таймер для відправки відладки
+bool debugEnabled = false; // Прапорець для включення/відключення відладки
+
 float T_boyler, T_koll, T_bat, T_out;
 bool hand_up, hand_down;
 // bool nasos_on;
@@ -117,6 +120,8 @@ void setup_pid()
 {
  
     isTimer.setInterval(50);
+    debugTimer.setInterval(5000); // Встановлення інтервалу для відладки
+
 
 }
 void loop_pid()
@@ -215,7 +220,25 @@ K_I = constrain(K_I, 1.0, 9999.0);
 K_D = constrain(K_D, 0.0, 9999.0);
 CYCLE = constrain(CYCLE, 1.0, 25.0);
 VALVE = constrain(VALVE, 15.0, 250.0);
-
+ // Відправка відладочної інформації раз на 5 секунд
+ if (debugEnabled && debugTimer.isReady()) {
+    Serial.println("=== Debug Info ===");
+    Serial.print("T_SET: "); Serial.println(T_SET);
+    Serial.print("T_OUT: "); Serial.println(T_OUT);
+    Serial.print("SET_VALUE: "); Serial.println(SET_VALUE);
+    Serial.print("PRESENT_VALUE: "); Serial.println(PRESENT_VALUE);
+    Serial.print("E_1 (Розрахунок розбіжності): "); Serial.println(E_1);
+    Serial.print("K_P: "); Serial.println(K_P);
+    Serial.print("K_I: "); Serial.println(K_I);
+    Serial.print("K_D: "); Serial.println(K_D);
+    Serial.print("DEAD_ZONE: "); Serial.println(DEAD_ZONE);
+    Serial.print("SUM_D_T: "); Serial.println(SUM_D_T);
+    Serial.print("TIMER_PID_UP: "); Serial.println(TIMER_PID_UP);
+    Serial.print("TIMER_PID_DOWN: "); Serial.println(TIMER_PID_DOWN);
+    Serial.print("UP: "); Serial.println(UP);
+    Serial.print("DOWN: "); Serial.println(DOWN);
+    Serial.println("==================");
+}
 // Розрахунок впливу ПІД
 if (PULSE_100MS && TIMER_PID == 0.0 && !PID_PULSE) {
     PID_PULSE = 1;
@@ -291,19 +314,18 @@ control.valveDownStop();}
 // Керування нагрівом
 if (eeprom.heat_state) {
     eeprom.heat_otop = true;
+    control.led0n(); // Включаем светодиод
 } else {
     eeprom.heat_otop = false;
+    control.led0ff(); // Выключаем светодиод
 }
 
 // Вимкнення нагріву при досягненні потрібної температури
 if (eeprom.heat_otop){
+   
+    nasos_valve = HIGH;}
     
-    if (T_SET == eeprom.temp_off_otop) {
-    // eeprom.heat_otop = LOW;
-      nasos_valve = LOW;
-    } else {nasos_valve = HIGH;}
-    }
-else{nasos_valve = LOW;}
+else {nasos_valve = LOW;}
 // Управління насосом
 if (nasos_valve) {
     control.nasosOtop_start(1);
@@ -315,3 +337,7 @@ if (nasos_valve) {
 
 }
 
+// Функція для включення/відключення відладки
+void toggleDebug(bool enable) {
+    debugEnabled = enable;
+}

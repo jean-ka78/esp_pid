@@ -26,14 +26,14 @@ struct st_Enum
   int time_valve;
 } eeprom;
 
-#define INIT_ADDR 1  // Номер резервной ячейки
-#define INIT_KEY 1   // Ключ первого запуска. 0-254, на выбор
+#define INIT_ADDR 0  // Номер резервной ячейки
+#define INIT_KEY 0   // Ключ первого запуска. 0-254, на выбор
 
 void first_start()
 {
   EEPROM.begin(sizeof(st_Enum));
   EEPROM.get(0, eeprom);
-  // Serial.println("first start read address: " + String(eeprom.init));
+  Serial.println("first start read address: " + String(eeprom.init));
   if (eeprom.init != INIT_KEY) { // Первый запуск
     eeprom.init = INIT_KEY;    // Записали ключ
 
@@ -51,9 +51,9 @@ void first_start()
     eeprom.valve_mode = true;
     eeprom.per_on = 10;
     eeprom.per_off = 120;
-    eeprom.kof_p = 3;
-    eeprom.kof_i = 30;
-    eeprom.kof_d = 10;
+    eeprom.kof_p = 0.05;
+    eeprom.kof_i = 1;
+    eeprom.kof_d = 1;
     eeprom.temp_max_out = 15;
     eeprom.temp_min_out = -15;
     eeprom.temp_max_heat = 60;

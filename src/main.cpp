@@ -3,9 +3,10 @@
 #include "config.h"
 #define PID
 #include "st_enum.h"
+#include "out.h"
 #include "link.h"
 #include "in.h"
-#include "out.h"
+
 #include "pid.h"
 #include "mqtt.h"
 
@@ -14,11 +15,14 @@ unsigned long timer1, timer2, timer3;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200); // Initialize serial communication
+  setup_out();
   setup_in();
   setupMqtt();
   setup_pid();
+  toggleDebug(true);
   first_start();
   ConnectWIFI();
+
   ArduinoOTA.setHostname("pid_ventil"); // Задаем имя сетевого порта
   ArduinoOTA.begin(); 
 
@@ -46,6 +50,7 @@ void loop() {
   {
     timer2 = millis();
     reconnect();
+    Safe_eeprom();
   }
 
 }
