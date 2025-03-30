@@ -3,11 +3,15 @@ const char *mqtt_server = "192.168.10.250"; // Имя сервера MQTT
 const int mqtt_port = 1883; // Порт для подключения к серверу MQTT
 const char *mqtt_user = "mqtt"; // Логин от сервер
 const char *mqtt_pass = "qwerty"; // Пароль от сервера
-const int PIN_LOW = 12; // Заміна pin_low на gpio12
-const int PIN_HIGH = 5;// Заміна pin_high на gpio05
-const int nasos_otop = 2; // Заміна nasos_otop на gpio2
-const int Led_wifi = 13; //  Led_wifi на gpio13иву выкочу
-const int Led_power = 14; //  Led_wifi на gpio14
+// Pins relay
+const int RELAY_LOW  = 12;  // GPIO12
+const int RELAY_HIGH = 5;   // GPIO5
+const int RELAY_NASOS = 2;  // GPIO2
+const int LED = 13;         // GPIO13
+
+
+
+
 // #define WIFI_SSID "aonline"  // Имя точки доступа WIFI
 // #define WIFI_PASS "1qaz2wsx3edc" // Пароль точки доступа WIFI
 

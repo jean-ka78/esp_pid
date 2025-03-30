@@ -87,35 +87,35 @@ bool _SEEPR11OSN = 0;
 bool _tempVariable_bool;
 float _tempVariable_float;
 
-    void turnNasosOn() {
-        digitalWrite(nasos_otop, HIGH);
-        eeprom.nasos_on = true;
-    }
+    // void turnNasosOn() {
+    //     digitalWrite(nasos_otop, HIGH);
+    //     eeprom.nasos_on = true;
+    // }
 
-    void turnNasosOff() {
-        digitalWrite(nasos_otop, LOW);
-        eeprom.nasos_on = false;
-    }
+    // void turnNasosOff() {
+    //     digitalWrite(nasos_otop, LOW);
+    //     eeprom.nasos_on = false;
+    // }
 
-    void valve_UP(){
+    // void valve_UP(){
         
-        digitalWrite(PIN_HIGH, LOW);
-        digitalWrite(PIN_LOW, HIGH);
-    }
+    //     digitalWrite(PIN_HIGH, LOW);
+    //     digitalWrite(PIN_LOW, HIGH);
+    // }
 
-    void valve_UP_STOP(){
-        digitalWrite(PIN_HIGH, HIGH);
-    }
+    // void valve_UP_STOP(){
+    //     digitalWrite(PIN_HIGH, HIGH);
+    // }
 
-    void valve_DOWN(){
-        digitalWrite(PIN_LOW, LOW);
-        digitalWrite(PIN_HIGH, HIGH);
-    }
+    // void valve_DOWN(){
+    //     digitalWrite(PIN_LOW, LOW);
+    //     digitalWrite(PIN_HIGH, HIGH);
+    // }
 
-    void valve_DOWN_STOP(){
+    // void valve_DOWN_STOP(){
 
-        digitalWrite(PIN_LOW, HIGH);
-    }
+    //     digitalWrite(PIN_LOW, HIGH);
+    // }
 void setup_pid()
 {
  
@@ -287,11 +287,12 @@ if (PULSE_100MS && UP) {
     TIMER_PID_UP += 0.1;
     TIMER_PID_UP = (TIMER_PID_UP > VALVE) ? VALVE : TIMER_PID_UP;
     // valve_UP();
-    control.valveUp();
+    relayController.setRelayHigh(true); // Включаем реле
+
 
 } else {
     // valve_UP_STOP();
-    control.valveUpStop();
+    relayController.setRelayHigh(false); // Выключаем реле
 }
 
 DOWN = ((((SUM_D_T <= -TIMER_PID && SUM_D_T <= -0.5) || D_T <= -CYCLE + 0.5 || TIMER_PID_DOWN >= VALVE) && AUTO_HAND) || (HAND_DOWN && !AUTO_HAND)) && ON_OFF && !UP;
@@ -299,13 +300,14 @@ if (PULSE_100MS && DOWN) {
     TIMER_PID_DOWN += 0.1;
     TIMER_PID_DOWN = (TIMER_PID_DOWN > VALVE) ? VALVE : TIMER_PID_DOWN;
     // valve_DOWN();
-    control.valveDown();
+    relayController.setRelayLow(true); // Включаем реле
 
 }
 else {
     // valve_DOWN_STOP();
-control.valveDownStop();}
-// _tempVariable_bool = DOWN;
+    relayController.setRelayLow(false); // Выключаем реле
+}
+
 
 #ifdef PID
 // digitalWrite(PIN_LOW, !DOWN);
@@ -314,10 +316,10 @@ control.valveDownStop();}
 // Керування нагрівом
 if (eeprom.heat_state) {
     eeprom.heat_otop = true;
-    control.led0n(); // Включаем светодиод
+    relayController.setLed(true); // Включаем светодиод
 } else {
     eeprom.heat_otop = false;
-    control.led0ff(); // Выключаем светодиод
+    relayController.setLed(false); // Выключаем светодиод
 }
 
 // Вимкнення нагріву при досягненні потрібної температури
@@ -328,9 +330,11 @@ if (eeprom.heat_otop){
 else {nasos_valve = LOW;}
 // Управління насосом
 if (nasos_valve) {
-    control.nasosOtop_start(1);
+    relayController.setRelayNasos(true); // Включаем насос
+    eeprom.nasos_on = true;
 } else {
-    control.nasosOtop_start(0);
+    relayController.setRelayNasos(false); // Выключаем насос
+    eeprom.nasos_on = false;
 }
 #endif
 
