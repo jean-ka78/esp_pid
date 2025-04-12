@@ -19,7 +19,7 @@ void setup() {
   setup_in();
   setupMqtt();
   setup_pid();
-  toggleDebug(true);
+  toggleDebug(false);
   first_start();
   ConnectWIFI();
 
@@ -32,7 +32,7 @@ void setup() {
 void loop() {
   ArduinoOTA.handle(); // Всегда готовы к прошивке
   rssi =  map(WiFi.RSSI(), -115, -35, 0, 100);
-  loop_out();
+  // loop_out();
   loop_pid();
   loopMQtt(); 
   // put your main code here, to run repeatedly:

@@ -6,8 +6,9 @@ const char *mqtt_pass = "qwerty"; // Пароль от сервера
 // Pins relay
 const int RELAY_LOW  = 12;  // GPIO12
 const int RELAY_HIGH = 5;   // GPIO5
-const int RELAY_NASOS = 2;  // GPIO2
-const int LED = 13;         // GPIO13
+const int RELAY_NASOS = 13;  // GPIO2
+const int LED = 2;         // GPIO13
+const int POWER = 14; // GPI14
 
 
 
@@ -18,4 +19,4 @@ const int LED = 13;         // GPIO13
 #define WIFI_SSID "Keenetic-2349"  // Имя точки доступа WIFI
 #define WIFI_PASS "10021963" // Пароль точки доступа WIFI
 // Data wire is plugged into GPIO 9 on the ESP
-#define ONE_WIRE_BUS 9
+#define ONE_WIRE_BUS 9 //9

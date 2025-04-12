@@ -90,19 +90,19 @@ void callback(char* topic, byte* payload, unsigned int length) {
   } else if (strcmp(topic, MODE_SET_TOPIC_HEAT) == 0) {
     if (message == "heat") {
       eeprom.heat_state = true;
-      eeprom.summer = false;
+      
       Serial.println("Heat_otop: " + String(eeprom.heat_state));
     } else if (message == "off") {
       eeprom.heat_state = false;
-      Serial.println("Heat: " + String(eeprom.heat_state));
+      Serial.println("Heat_otop: " + String(eeprom.heat_state));
     } else if (message == "heat_cool") {
-      eeprom.summer = true;
+      
       eeprom.heat_state = false;
     }
   } else if (strcmp(topic, TEMP_BOILER_GIS) == 0) {
     float temp_gis = message.toFloat();
     eeprom.gis_boy = temp_gis;
-    Serial.println("GIS Otopl: " + String(eeprom.gis_boy));
+    Serial.println("GIS boylera: " + String(eeprom.gis_boy));
   } else if (strcmp(topic, TIME_HEAT_CIKL) == 0) {
     int time_cikl = message.toInt();
     eeprom.per_off = time_cikl;
@@ -127,22 +127,28 @@ void callback(char* topic, byte* payload, unsigned int length) {
   } else if (strcmp(topic, KOF_P) == 0) {
     float kof_p = message.toFloat();
     eeprom.kof_p = kof_p;
+    Serial.println("kof_p: " + String(eeprom.kof_p));
   } else if (strcmp(topic, KOF_I) == 0) {
     float kof_i = message.toFloat();
     eeprom.kof_i = kof_i;
+    Serial.println("kof_i: " + String(eeprom.kof_i));
   } else if (strcmp(topic, KOF_D) == 0) {
     float kof_d = message.toFloat();
     eeprom.kof_d = kof_d;
+    Serial.println("kof_d: " + String(eeprom.kof_d));
   } else if (strcmp(topic, TEMP_DEAD_ZONE) == 0) {
     float dead_zone = message.toFloat();
     eeprom.dead_zone = dead_zone;
+    Serial.println("Gist_Otopl: " + String(eeprom.dead_zone));
   } else if (strcmp(topic, TEMP_OUT) == 0) {
     float temp_out = message.toFloat();
     T_out = temp_out;
   } else if (strcmp(topic, VALVE_MODE) == 0) {
     if (message == "on") {
+      Serial.println("Valve mode auto");
       eeprom.valve_mode = true;
     } else if (message == "off") {
+      Serial.println("Valve mode manual");
       eeprom.valve_mode = false;
     }
   } else if (strcmp(topic, HAND_UP_HEAT) == 0) {

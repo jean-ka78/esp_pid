@@ -4,13 +4,15 @@ class RelayController {
         int relayHigh;
         int relayNasos;
         int led;
+        int power;
     
     public:
-        RelayController(int low, int high, int nasos, int ledPin) {
+        RelayController(int low, int high, int nasos, int ledPin, int power_pin) {
             relayLow = low;
             relayHigh = high;
             relayNasos = nasos;
             led = ledPin;
+            power = power_pin;
         }
     
         void begin() {
@@ -18,12 +20,14 @@ class RelayController {
             pinMode(relayHigh, OUTPUT);
             pinMode(relayNasos, OUTPUT);
             pinMode(led, OUTPUT);
+            pinMode(power, OUTPUT);
             
             // Отключаем реле при старте (если реле с логикой LOW)
             digitalWrite(relayLow, LOW);
             digitalWrite(relayHigh, LOW);
             digitalWrite(relayNasos, LOW);
             digitalWrite(led, LOW);
+            digitalWrite(power, HIGH);
         }
     
         void setRelayLow(bool state) {
@@ -50,7 +54,7 @@ class RelayController {
     };
     
     // Использование класса
-    RelayController relayController(RELAY_LOW, RELAY_HIGH, RELAY_NASOS, LED);
+    RelayController relayController(RELAY_LOW, RELAY_HIGH, RELAY_NASOS, LED, POWER);
 
 void setup_out() {
     // Налаштування пінів
